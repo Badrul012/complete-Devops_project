@@ -1,1 +1,3 @@
-# django-app
+The project is a full-stack web application built using the Django framework for Python, with a front-end user interface built using HTML, CSS, and JavaScript. The application is hosted on a Kubernetes cluster and is continuously integrated and deployed using a CI/CD pipeline. The pipeline is automated using GitHub for version control, Jenkins for continuous integration, and Kubernetes for deployment.
+
+The purpose of the application could vary depending on the project, but generally, it could be a blog, an e-commerce platform, a social network, or any other web application that requires a back-end server and a front-end interface. By using a Kubernetes cluster and a CI/CD pipeline, the project can easily scale as needed and deploy changes automatically, ensuring that the application is always up-to-date and available to users.
