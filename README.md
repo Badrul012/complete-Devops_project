@@ -1,3 +1,11 @@
-The project is a full-stack web application built using the Django framework for Python, with a front-end user interface built using HTML, CSS, and JavaScript. The application is hosted on a Kubernetes cluster and is continuously integrated and deployed using a CI/CD pipeline. The pipeline is automated using GitHub for version control, Jenkins for continuous integration, and Kubernetes for deployment.
+This project involves creating a fully automated CI/CD pipeline using Jenkins, GitHub, Kubernetes, AWS, and Terraform to deploy a Django web application.
 
-The purpose of the application could vary depending on the project, but generally, it could be a blog, an e-commerce platform, a social network, or any other web application that requires a back-end server and a front-end interface. By using a Kubernetes cluster and a CI/CD pipeline, the project can easily scale as needed and deploy changes automatically, ensuring that the application is always up-to-date and available to users.
+The project includes several components. The first component is the Django web application, which is the main application that will be deployed on the Kubernetes cluster. The application code is stored in a GitHub repository and will be automatically built and deployed using the CI/CD pipeline.
+
+The second component is the Jenkins server, which will be used to automate the CI/CD pipeline. Jenkins will monitor the GitHub repository for any changes to the code and will automatically trigger a build and deployment process when new changes are detected.
+
+The third component is the Kubernetes cluster, which will host the Django web application. The Kubernetes cluster will be deployed in AWS using Terraform, which will automate the entire deployment process.
+
+The fourth component is the AWS infrastructure, which will be managed by Terraform. Terraform will automatically provision the necessary AWS resources such as EC2 instances, VPC, security groups, etc., and then deploy the Kubernetes cluster in the newly created infrastructure.
+
+The entire pipeline is fully automated, from code changes to application deployment, and can be easily replicated in other environments using Terraform. This project provides a complete solution for deploying a Django web application in a scalable and reliable manner using modern DevOps tools and techniques.
