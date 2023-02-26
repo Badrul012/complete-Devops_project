@@ -1,34 +1,33 @@
-provider "aws" {
-  region = var.region
-}
-
-module "kubernetes" {
-  source = "terraform-aws-modules/kubernetes/aws"
-
-  cluster_name = var.cluster_name
-  subnets      = var.subnets
-  vpc_id       = var.vpc_id
-}
-
-resource "aws_security_group" "k8s" {
-  name_prefix = "k8s-"
-
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "k8s-security-group"
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.0.2"
+    }
+    jenkins = {
+      source = "jenkinsci/jenkins"
+      version = ">= 2.0"
+    }
   }
 }
 
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+provider "jenkins" {
+  url               = "http://jenkins.example.com"
+  username          = "admin"
+  password          = "admin"
+  insecure_skip_tls_verify = true
+}
+
+module "django" {
+  source = "./django"
+
+  kubernetes_cluster_name = "example-cluster"
+  kubernetes_namespace    = "example-namespace"
+
+  jenkins_job_name        = "example-job"
+  jenkins_pipeline_script = "Jenkinsfile"
+}

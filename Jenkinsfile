@@ -1,33 +1,30 @@
 pipeline {
-  agent any
-
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
+    agent any
+    environment {
+        KUBECONFIG = credentials('kubeconfig')
+        IMAGE_NAME = "example.com/my-django-app:${env.BUILD_NUMBER}"
     }
-    
-    stage('Terraform Init') {
-      steps {
-        sh 'terraform init'
-      }
-    }
-    
-    stage('Terraform Apply') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-          sh 'terraform apply -auto-approve'
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
         }
-      }
-    }
-    
-    stage('Kubectl Apply') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-          sh 'kubectl apply -f kubernetes.yml'
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                    sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+                    sh "docker push $IMAGE_NAME"
+                }
+            }
         }
-      }
+        stage('Deploy to Kubernetes') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh 'kubectl apply -f kubernetes/deployment.yaml'
+                    sh 'kubectl apply -f kubernetes/service.yaml'
+                }
+            }
+        }
     }
-  }
 }

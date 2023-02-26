@@ -9,3 +9,36 @@ The third component is the Kubernetes cluster, which will host the Django web ap
 The fourth component is the AWS infrastructure, which will be managed by Terraform. Terraform will automatically provision the necessary AWS resources such as EC2 instances, VPC, security groups, etc., and then deploy the Kubernetes cluster in the newly created infrastructure.
 
 The entire pipeline is fully automated, from code changes to application deployment, and can be easily replicated in other environments using Terraform. This project provides a complete solution for deploying a Django web application in a scalable and reliable manner using modern DevOps tools and techniques.
+
+
+
+
+project/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── modules/
+│   ├── vpc/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── ec2/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── rds/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── kubernetes/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   ├── jenkins/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+|
+├── docker/
+│   ├── Dockerfile
+├── README.md
